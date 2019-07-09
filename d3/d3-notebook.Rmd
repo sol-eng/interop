@@ -1,0 +1,26 @@
+---
+title: "D3"
+output: html_notebook
+---
+  
+```{r}
+library(r2d3)
+library(dplyr)
+library(babynames)
+bars <- babynames %>%
+  filter(name == "Jennifer", sex == "F", year > 1960, year < 1982) %>%
+  arrange(year) %>%
+  mutate(prop = prop * 1000) %>%
+  pull(prop)
+```
+
+```{d3 data=bars, options=list(color = 'orange')}
+svg.selectAll('rect')
+.data(data)
+.enter()
+.append('rect')
+.attr('width', function(d) { return d * 10; })
+.attr('height', '20px')
+.attr('y', function(d, i) { return i * 22; })
+.attr('fill', options.color);
+```

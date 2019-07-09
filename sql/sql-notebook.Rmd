@@ -1,0 +1,39 @@
+---
+title: "SQL Notebook"
+output: html_notebook
+---
+
+```{r setup}
+library(DBI)
+library(dplyr)
+
+con <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+dbWriteTable(con, "airlines", nycflights13::airlines)
+dbWriteTable(con, "airports", nycflights13::airports)
+dbWriteTable(con, "flights", nycflights13::flights)
+
+airlines <- tbl(con, "airlines")
+airports <- tbl(con, "airports")
+flights  <- tbl(con, "flights")
+```
+
+```{sql connection=con}
+SELECT carrier, day, arr_delay, dep_delay
+FROM flights
+WHERE carrier in ("AA", "UA") and month = 12
+```
+
+```{r}
+flights %>%
+  select(carrier, day, arr_delay, dep_delay) %>%
+  filter(carrier %in% c("AA", "UA"))
+```
+
+```{r}
+dbGetQuery(con, "
+           SELECT carrier, day, arr_delay, dep_delay
+           FROM flights
+           WHERE carrier in ('AA', 'UA') and month = 12
+           ")
+```
+
