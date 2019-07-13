@@ -4,36 +4,27 @@ output: html_notebook
 ---
 
 ```{r setup}
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 library(DBI)
 library(dplyr)
-
-con <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-dbWriteTable(con, "airlines", nycflights13::airlines)
-dbWriteTable(con, "airports", nycflights13::airports)
-dbWriteTable(con, "flights", nycflights13::flights)
-
-airlines <- tbl(con, "airlines")
-airports <- tbl(con, "airports")
-flights  <- tbl(con, "flights")
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname = "flights.sqlite")
 ```
 
 ```{sql connection=con}
-SELECT carrier, day, arr_delay, dep_delay
+SELECT carrier, day, avg(arr_delay) as arr_delay, avg(dep_delay) as dep_delay
 FROM flights
-WHERE carrier in ("AA", "UA") and month = 12
+WHERE carrier in ('AA', 'UA') and month = 12
+GROUP BY carrier, day
 ```
 
 ```{r}
-flights %>%
-  select(carrier, day, arr_delay, dep_delay) %>%
-  filter(carrier %in% c("AA", "UA"))
+tbl(con, "flights") %>%
+  filter(carrier %in% c('AA', 'UA'), month == 12) %>%
+  group_by(carrier, day) %>%
+  summarize(arr_delay = mean(arr_delay, na.rm = TRUE), dep_delay = mean(dep_delay, na.rm = TRUE))
 ```
 
 ```{r}
-dbGetQuery(con, "
-           SELECT carrier, day, arr_delay, dep_delay
-           FROM flights
-           WHERE carrier in ('AA', 'UA') and month = 12
-           ")
+dbDisconnect(con)
 ```
 

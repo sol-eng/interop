@@ -9,10 +9,9 @@ output: html_notebook
 ### Setup
 
 ```{r setup}
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 library(reticulate)
-readr::write_csv(nycflights13::flights, path = "flights.csv")
-
-print(reticulate::py_config())
+reticulate::py_config()
 ```
 
 ***
@@ -24,7 +23,7 @@ print(reticulate::py_config())
 
 ```{python data}
 import pandas
-flights = pandas.read_csv("flights.csv")
+flights = pandas.read_csv("python/flights.csv")
 flights = flights[flights['dest'] == "ORD"]
 flights = flights[['carrier', 'dep_delay', 'arr_delay']]
 flights = flights.dropna()
@@ -46,7 +45,7 @@ ggplot(py$flights, aes(carrier, arr_delay)) + geom_point() + geom_jitter()
 ```{r, message=FALSE}
 library(readr)
 library(dplyr)
-flights <- read_csv("flights.csv") %>%
+flights <- read_csv("python/flights.csv") %>%
   filter(dest == "ORD") %>%
   select(carrier, dep_delay, arr_delay) %>%
   na.omit()

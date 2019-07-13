@@ -1,8 +1,6 @@
--- !preview conn=DBI::dbConnect(odbc::odbc(), "SQL Server (finance)")
+-- !preview conn=DBI::dbConnect(RSQLite::SQLite(), dbname = "sql/flights.sqlite")
 
-SELECT education, count(*) as n
-FROM bank
-WHERE year=2010
-GROUP BY education
-ORDER BY n
-;
+SELECT carrier, day, avg(arr_delay) as arr_delay, avg(dep_delay) as dep_delay
+FROM flights
+WHERE carrier in ('AA', 'UA') and month = 12
+GROUP BY carrier, day
