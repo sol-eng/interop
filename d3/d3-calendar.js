@@ -1,4 +1,4 @@
-// !preview r2d3 data = read.csv("vignettes/gallery/calendar/dji-latest.csv"), d3_version = 4, container = "div", options = list(start = 2006, end = 2011)
+// !preview r2d3 data = read.csv("d3/data/dji-latest.csv"), d3_version = 4, container = "div", options = list(start = 2006, end = 2011)
 
 // Based on https://bl.ocks.org/mbostock/4063318
 

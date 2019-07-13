@@ -1,4 +1,4 @@
--- !preview conn=DBI::dbConnect(RSQLite::SQLite(), dbname = "sql/flights.sqlite")
+-- !preview conn=DBI::dbConnect(RSQLite::SQLite(), dbname = "sql/flightsdb.sqlite")
 
 SELECT carrier, day, avg(arr_delay) as arr_delay, avg(dep_delay) as dep_delay
 FROM flights

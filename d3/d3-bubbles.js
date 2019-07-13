@@ -1,4 +1,4 @@
-// !preview r2d3 data = read.csv("d3/gallery/bubbles/flare.csv"), d3_version = 4
+// !preview r2d3 data = read.csv("d3/data/flare.csv"), d3_version = 4
 
 // Based on https://bl.ocks.org/mbostock/4063269
 
