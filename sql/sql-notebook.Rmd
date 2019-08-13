@@ -1,12 +1,16 @@
 ---
 title: "SQL Notebook"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup}
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
-library(DBI)
-library(dplyr)
+suppressPackageStartupMessages({
+  library(DBI)
+  library(dplyr)
+})
 ```
 
 ```{r}
@@ -24,7 +28,10 @@ GROUP BY carrier, day
 tbl(con, "flights") %>%
   filter(carrier %in% c('AA', 'UA'), month == 12) %>%
   group_by(carrier, day) %>%
-  summarize(arr_delay = mean(arr_delay, na.rm = TRUE), dep_delay = mean(dep_delay, na.rm = TRUE))
+  summarize(
+    arr_delay = mean(arr_delay, na.rm = TRUE), 
+    dep_delay = mean(dep_delay, na.rm = TRUE)
+  )
 ```
 
 ```{r}
